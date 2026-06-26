@@ -8,10 +8,15 @@ BIB      := $(SRCDIR)/refs/references.bib
 LATEX    := pdflatex
 LATEXOPTS := -interaction=nonstopmode -halt-on-error
 
+# Which figure(s) make_figures.py builds; override on the command line, e.g.
+#   make figures FIG=sine
+# Left empty by default: `make figures` opens make_figures.py's interactive menu.
+FIG      ?=
+
 # Running `make` with no target prints the overview below.
 .DEFAULT_GOAL := help
 
-.PHONY: help compile clean
+.PHONY: help compile figures clean
 
 # Self-documenting help: lists every target with a `## description` comment.
 help:  ## Show this overview of available commands
@@ -33,6 +38,11 @@ $(PDF): $(TEX) $(BIB)
 	cd $(SRCDIR) && $(LATEX) $(LATEXOPTS) $(DOC).tex
 	cd $(SRCDIR) && $(LATEX) $(LATEXOPTS) $(DOC).tex
 	$(MAKE) clean
+
+# Build the paper's figures. uv reads the script's pinned PEP 723 dependencies
+# automatically, so no separate environment setup is needed.
+figures:  ## Build the paper's figures (FIG=all|sine|... ; default: ask)
+	cd $(SRCDIR) && uv run make_figures.py $(FIG)
 
 # Remove LaTeX build artifacts (keeps the generated PDF).
 clean:  ## Remove LaTeX build artifacts (keeps the generated PDF)
