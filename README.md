@@ -1,5 +1,7 @@
 # paper_template
 
+PLEASE ADJUST this template for the needs of cvxgrp.
+
 A starter template for writing academic papers in LaTeX, with a reproducible
 build and automated PDF compilation on every push.
 
