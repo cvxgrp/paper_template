@@ -18,21 +18,22 @@ build and automated PDF compilation on every push.
 
 ## Building
 
-You need a LaTeX distribution (e.g. TeX Live or MacTeX) with `latexmk`.
+You need a LaTeX distribution (e.g. TeX Live or MacTeX) with `pdflatex` and
+`bibtex`.
 
 ```bash
-make        # build paper/main.pdf
-make clean  # remove build artifacts
+make          # show the available targets
+make compile  # build paper/main.pdf
+make clean    # remove build artifacts (keeps the PDF)
 ```
 
 ## Continuous integration
 
-Three GitHub Actions workflows run automatically:
+Two GitHub Actions workflows run automatically:
 
-- **build.yml** — compiles the PDF on every push and pull request and uploads
-  it as a workflow artifact (also attaches it to tagged releases).
-- **build-pdf.yml** — on pushes to `main`, compiles the PDF and publishes it to
-  the `pdf` branch.
+- **build.yml** — compiles the PDF on every push and pull request, uploads it
+  as a workflow artifact, attaches it to tagged releases, and (on pushes to
+  `main`) publishes it to the `pdf` branch.
 - **arxiv.yml** — on pushes to `main`, assembles a self-contained arXiv
   submission tarball (source `.tex`, `references.bib`, pre-built `.bbl`, and
   figure PDFs), verifies it compiles standalone, and publishes it to the

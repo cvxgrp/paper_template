@@ -1,17 +1,40 @@
-PAPER   := main
-SRC_DIR := paper
-PDF     := $(SRC_DIR)/$(PAPER).pdf
+# Makefile for building the LaTeX document.
 
-.PHONY: all clean watch
+DOC      := main
+SRCDIR   := paper
+PDF      := $(SRCDIR)/$(DOC).pdf
+TEX      := $(SRCDIR)/$(DOC).tex
+BIB      := $(SRCDIR)/refs/references.bib
+LATEX    := pdflatex
+LATEXOPTS := -interaction=nonstopmode -halt-on-error
 
-all: $(PDF)
+# Running `make` with no target prints the overview below.
+.DEFAULT_GOAL := help
 
-$(PDF): $(SRC_DIR)/$(PAPER).tex $(SRC_DIR)/refs/references.bib
-	latexmk -pdf -cd -interaction=nonstopmode -halt-on-error $(SRC_DIR)/$(PAPER).tex
+.PHONY: help compile clean
 
-watch:
-	latexmk -pdf -pvc -cd -interaction=nonstopmode $(SRC_DIR)/$(PAPER).tex
+# Self-documenting help: lists every target with a `## description` comment.
+help:  ## Show this overview of available commands
+	@echo "Usage: make <target>"
+	@echo ""
+	@echo "Targets:"
+	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) \
+		| sort \
+		| awk -F':.*## ' '{ printf "  %-10s %s\n", $$1, $$2 }'
 
-clean:
-	latexmk -cd -C $(SRC_DIR)/$(PAPER).tex
-	rm -f $(SRC_DIR)/*.bbl $(SRC_DIR)/*.run.xml
+# Compile the document. The first pass writes the .aux citation list, BibTeX
+# turns it into a formatted .bbl from refs/references.bib, and the final two
+# passes fold the bibliography in and resolve all cross-references.
+compile: $(PDF)  ## Build the LaTeX document (main.pdf)
+
+$(PDF): $(TEX) $(BIB)
+	cd $(SRCDIR) && $(LATEX) $(LATEXOPTS) $(DOC).tex
+	cd $(SRCDIR) && bibtex $(DOC)
+	cd $(SRCDIR) && $(LATEX) $(LATEXOPTS) $(DOC).tex
+	cd $(SRCDIR) && $(LATEX) $(LATEXOPTS) $(DOC).tex
+	$(MAKE) clean
+
+# Remove LaTeX build artifacts (keeps the generated PDF).
+clean:  ## Remove LaTeX build artifacts (keeps the generated PDF)
+	cd $(SRCDIR) && rm -f $(DOC).aux $(DOC).log $(DOC).out $(DOC).toc \
+		$(DOC).bbl $(DOC).blg $(DOC).nav $(DOC).snm $(DOC).vrb
