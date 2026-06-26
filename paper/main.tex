@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[round]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{../figures/}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\title{A Title for the Paper}
+\author{%
+  First Author\thanks{Affiliation, \texttt{first@example.com}}
+  \and
+  Second Author\thanks{Affiliation, \texttt{second@example.com}}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+A concise summary of the problem, the approach, and the main result.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Motivation, contribution, and an outline of the paper. Cite related work
+like \citet{example2020} or \citep{example2020}.
+
+\section{Method}
+\label{sec:method}
+
+\begin{definition}
+State definitions here.
+\end{definition}
+
+\begin{theorem}
+State the main result here.
+\end{theorem}
+
+\begin{proof}
+Sketch or full proof.
+\end{proof}
+
+\section{Results}
+\label{sec:results}
+
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=0.7\linewidth]{example}
+%   \caption{Caption.}
+%   \label{fig:example}
+% \end{figure}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Summarize and point to future work.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
